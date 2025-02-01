@@ -1,0 +1,4 @@
+Scanning...
+I2C device found at address 0x44  !
+I2C device found at address 0x68  !
+done
