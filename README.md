@@ -3,34 +3,34 @@
 
 ## Table of Contents
 
-* Introduction
-* Hardware Description
-	* Pinout Summary
-	* Buttons
-	* Temperature and Humidity Sensor
-	* Light Sensor
-	* Buzzer
-	* LED Matrix
-	* Real Time Clock (RTC)
-	* Battery (and Voltage Measurement)
-	* USB to Serial Port Chip
-	* Microcontroller
-	* PCB
-* Development Environment
-	* Arduino IDE
-	* Arduino CLI
-	* PlatormIO 	
-* Arduino Examples
-	* Backup Firmware
-	* Buttons 
-	* Light Sensor 
-	* Battery Voltage
-    * Buzzer
-    * RTC
-    * Temperature / Humidity Sensor
-    * LED Matrix
-* Troubleshooting
-* References
+* [Introduction](#introduction)
+* [Hardware Description](#hardware-description)
+	* [Pinout Summary](#pinout-summary)
+	* [Buttons](#buttons)
+	* [Temperature and Humidity Sensor](#temperature-and-humidity-sensor)
+	* [Light Sensor](#light-sensor)
+	* [Buzzer](#buzzer)
+	* [LED Matrix](#led-matrix)
+	* [Real Time Clock (RTC)](#real-time-clock)
+	* [Battery (and Voltage Measurement)](#battery-and-voltage-measurement)
+	* [USB to Serial Port Chip](#usb-to-serial-port-chip)
+	* [Microcontroller](#microcontroller)
+	* [PCB](#pcb)
+* [Development Environment](#development-environment)
+	* [Arduino IDE](#arduino-ide)
+	* [Arduino CLI](#arduino-cli)
+	* [PlatormIO](#platformio) 	
+* [Arduino Examples](#arduino-examples)
+	* [Backup Firmware](#backup-firmware)
+	* [Buttons](#buttons-1)
+	* [Light Sensor](#light-sensor-1)
+	* [Battery Voltage](#battery-voltage)
+    * [Buzzer](#buzzer-1)
+    * [RTC](#rtc)
+    * [Temperature / Humidity Sensor](#temperature--humidity-sensor)
+    * [LED Matrix](#led-matrix-1)
+* [Troubleshooting](#troubleshooting)
+* [References](#references)
 
 
 ## Introduction
@@ -184,7 +184,7 @@ Credit for the images go to users popy2k17 and klein0r in this reddit thread:
 
 [https://www.reddit.com/r/homeassistant/comments/131okf7/ulanzi_tc001/](https://www.reddit.com/r/homeassistant/comments/131okf7/ulanzi_tc001/)
 
-## Development Environment 
+## Development Environment
 
 In terms of development environment, the setup procedure is the same as any ESP32-based board. Thanks to the onboard CH340 chip you don't need any additional hardware to flash new firmware. For this reason I will mainly point to existing ESP32 tutorials.
 
@@ -337,7 +337,7 @@ void loop() {
 }
 ```
 
-### Light Sensor 
+### Light Sensor
 
 #### Example 1: Raw Value
 
