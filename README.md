@@ -37,13 +37,15 @@
 
 The Ulanzi TC001 "Smart Pixel Clock" is a nice gadget, and out-of-the-box it can used a smart clock, weather display, follower counter, and more. However, it is also known for its "hackability", meaning that it is relatively easy to modify the hardware and software, and use the device for other purposes. The built-in CH340 USB-to-Serial chip gives us full access to the ESP32 microcontroller via USB, allowing us to easily flash it with custom firmware for alternative use cases. One popular use of the device, is to use it as an information display in a Home Assistant environment.
 
+<img src="images/ulanzi.jpg" width="600" />
+
 When I tried to write custom firmware for this device, I found that the hardware documentation was lacking. Small details are scattered across repositories and forum threads, but I could not find a complete overview. This repository describes the hardware in detail, allowing you to make full use of all the hardware components on your custom firmware. Some code examples are also provided for Arduino-ESP32. 
 
 The device can be purchased from the official website, but can also be found on Amazon and other retailers:
 
 [https://www.ulanzi.com/products/ulanzi-pixel-smart-clock-2882](https://www.ulanzi.com/products/ulanzi-pixel-smart-clock-2882)
 
-<img src="images/ulanzi.jpg" width="900" />
+<img src="images/ulanzi_specs.jpg" width="900" />
 
 ## Hardware Description
 
