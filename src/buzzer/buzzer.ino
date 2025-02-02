@@ -7,7 +7,7 @@ int freqs[4] = {247, 262, 294, 330};
 
 void setup() {
     Serial.begin(115200);
-    pinMode(PIN_BUZZER, OUTPUT);
+    pinMode(PIN_BUZZER, INPUT_PULLDOWN);
 }
 
 void loop() {

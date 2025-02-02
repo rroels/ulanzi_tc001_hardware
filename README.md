@@ -1,7 +1,15 @@
 # Ulanzi TC001 Hardware Description and Arduino Examples
 
+> [!NOTE]  
+> This document provides the information needed to interface with the various hardware components in the Ulanzi TC001. 
+> 
+> However, this page does not aim to be a tutorial for first-time programmers. 
+> For that, please refer to the many other great ESP32 resources available online. 
+> Any existing tutorial for using Arduino on an ESP32, also applies to the Ulanzi TC001. 
+> 
+> That said, this page does contain many working code examples to get you started :)
 
-## Table of Contents
+## Table of Content 
 
 * [Introduction](#introduction)
 * [Hardware Description](#hardware-description)
@@ -17,29 +25,28 @@
 	* [Microcontroller](#microcontroller)
 	* [PCB](#pcb)
 * [Development Environment](#development-environment)
-	* [Arduino IDE](#arduino-ide)
-	* [Arduino CLI](#arduino-cli)
-	* [PlatormIO](#platformio) 	
+  	* [Backup Firmware](#backup-firmware)
+    * [Arduino IDE](#option-1-arduino-ide)
+    * [Arduino CLI](#option-2-arduino-cli)
+    * [PlatormIO](#option-3-platformio) 	
 * [Arduino Examples](#arduino-examples)
-	* [Backup Firmware](#backup-firmware)
-	* [Buttons](#buttons-1)
-	* [Light Sensor](#light-sensor-1)
-	* [Battery Voltage](#battery-voltage)
-    * [Buzzer](#buzzer-1)
-    * [RTC](#rtc)
-    * [Temperature / Humidity Sensor](#temperature--humidity-sensor)
-    * [LED Matrix](#led-matrix-1)
+	* [Buttons](#example-code-buttons)
+	* [Light Sensor](#example-code-light-sensor)
+	* [Battery Voltage](#example-code-battery-voltage)
+    * [Buzzer](#example-code-buzzer)
+    * [RTC](#example-code-real-time-clock-rtc)
+    * [Temperature / Humidity Sensor](#example-code-temperature--humidity-sensor)
+    * [LED Matrix](#example-code-led-matrix)
 * [Troubleshooting](#troubleshooting)
 * [References](#references)
-
 
 ## Introduction
 
 The Ulanzi TC001 "Smart Pixel Clock" is a nice gadget, and out-of-the-box it can used a smart clock, weather display, follower counter, and more. However, it is also known for its "hackability", meaning that it is relatively easy to modify the hardware and software, and use the device for other purposes. The built-in CH340 USB-to-Serial chip gives us full access to the ESP32 microcontroller via USB, allowing us to easily flash it with custom firmware for alternative use cases. One popular use of the device, is to use it as an information display in a Home Assistant environment.
 
-<img src="images/ulanzi.jpg" width="600" />
+<img src="images/ulanzi.jpg" width="600" /> 
 
-When I tried to write custom firmware for this device, I found that the hardware documentation was lacking. Small details are scattered across repositories and forum threads, but I could not find a complete overview. This repository describes the hardware in detail, allowing you to make full use of all the hardware components on your custom firmware. Some code examples are also provided for Arduino-ESP32. 
+When I tried to write custom firmware for this device, I found that the hardware documentation was lacking. Small details are scattered across repositories and forum threads, but I could not find a complete overview. I also figured out some details not described anywhere else. This repository describes the hardware in detail, allowing you to make full use of all the hardware components on your custom firmware. Some code examples are also provided for Arduino-ESP32. 
 
 The device can be purchased from the official website, but can also be found on Amazon and other retailers:
 
@@ -47,11 +54,11 @@ The device can be purchased from the official website, but can also be found on 
 
 <img src="images/ulanzi_specs.jpg" width="900" />
 
-## Hardware Description
+# Hardware Description
 
 The following information was verified on an Ulanzi TC001, purchased from Amazon early 2025. Although we know that there are different PCB revisions, the following information is the same for all these revisions, at the time of writing. 
 
-### Pinout Summary
+## Pinout Summary
 
 | Hardware Component | GPIO | Info |
 |---|---|---|
@@ -65,7 +72,7 @@ The following information was verified on an Ulanzi TC001, purchased from Amazon
 | Middle Button | GPIO27 | Active low | 
 | Right Button | GPIO14 | Active low |
 
-### Buttons
+## Buttons
 
 The three buttons at the top of the device are connected to the following pins:
 
@@ -86,7 +93,7 @@ It's a good idea to activate the internal pullup resistor, to avoid having the b
  pinMode(14, INPUT_PULLUP);
 ```
 
-### Temperature and Humidity Sensor
+## Temperature and Humidity Sensor
 
 Temperature and humidity are both measured by a single SHT3x (SHT31?) sensor:
 
@@ -96,7 +103,7 @@ Communication with the sensor is done via I2C (SDA=`GPIO21`, SCL=`GPIO22`), at a
 
 Note that the temperature will often be a bit higher than the actual air temperature, as the sensor is easily affected by the heat of the LED matrix, microcontroller and battery in the small plastic enclosure. 
 
-### Light Sensor
+## Light Sensor
 
 The light sensor is at the top of the device, next to the buttons. It is a simple GL5516 photoresistor.
 
@@ -106,7 +113,7 @@ It is connected to analog pin `GPIO35` (ADC7), and the measured voltage represen
 
 The following library can be used to convert the raw GL5516 output into lux: [https://github.com/QuentinCG/Arduino-Light-Dependent-Resistor-Library](https://github.com/QuentinCG/Arduino-Light-Dependent-Resistor-Library)
 
-### Buzzer
+## Buzzer
 
 The buzzer is connected to `GPIO15`, and can be used to produce "beeps" at various pitches. To use the buzzer, send a square wave signal through `GPIO15`, and the wave's frequency will determine the "pitch" of the beep. Use something like Arduino's `tone()` function (or another buzzer library) to facilitate this. 
 
@@ -116,7 +123,7 @@ WARNING: Do not leave this pin floating, or "random noise" on the pin will cause
 pinMode(15, INPUT_PULLDOWN);
 ```
 
-### LED Matrix
+## LED Matrix
 
 The LED Matrix is a 8x32 matrix of daisy-chained WS2812. 
 
@@ -140,7 +147,7 @@ The LEDs are connected in a single chain, with the even rows going from left to 
 
 The protocol for the WS2812 is not trivial, so you probably want to use a library for this. 
 
-### Real Time Clock
+## Real Time Clock
 
 The built-in RTC in the ESP32 is not really suitable for accurate time-keeping. For this reason the Ulanzi TC001 also had a dedicated RTC, the DS1307.
 
@@ -150,19 +157,19 @@ Communication with the RTC is done via I2C (SDA=`GPIO21`, SCL=`GPIO22`), at addr
 
 <img src="images/temp_sensor.jpg" width="400" />
 
-### Battery (and Voltage Measurement)
+## Battery (and Voltage Measurement)
 
 The Ulanzi TC001 has a built-in 4400mAh battery and battery charging circuit. 
 
 Analog pin `GPIO34/ADC6` can be used to measure the (scaled) voltage. I assume this is implemented with a simple voltage divider, that scales down the battery voltage to a 0-3.3V range, which can be safely read by the ESP32.  
 
-### USB to Serial Port Chip
+## USB to Serial Port Chip
 
 The PCB has an CH340 USB-to-Serial chip, allowing direct communication to the ESP32 via USB. To me, the ¬ of this chip shows that Ulanzi wanted us to have easy access to the hardware, as there is no other reason to have such a chip in a consumer product. Thank you, Ulanzi!
 
 <img src="images/serial.jpg" width="400" />
 
-### Microcontroller
+## Microcontroller
 
 The microcontroller is an ESP32-WROOM-32D.
 
@@ -172,7 +179,7 @@ The microcontroller is an ESP32-WROOM-32D.
 
 You can treat it like any regular ESP32 (because it is), and use the usual tools to program it. 
 
-### PCB
+## PCB
 
 There seem to be different revisions of the PCB. However, there is no difference in the sensors and actuators described on this page. 
 
@@ -186,11 +193,62 @@ Credit for the images go to users popy2k17 and klein0r in this reddit thread:
 
 [https://www.reddit.com/r/homeassistant/comments/131okf7/ulanzi_tc001/](https://www.reddit.com/r/homeassistant/comments/131okf7/ulanzi_tc001/)
 
-## Development Environment
+# Development Environment
 
-In terms of development environment, the setup procedure is the same as any ESP32-based board. Thanks to the onboard CH340 chip you don't need any additional hardware to flash new firmware. For this reason I will mainly point to existing ESP32 tutorials.
+In terms of development environment, the setup procedure is the same as any ESP32-based board. 
+Thanks to the onboard CH340 chip you don't need any additional hardware to flash new firmware. 
+For this reason I will mainly point to existing ESP32 tutorials.
 
-### Arduino IDE
+There are different ways to work with Arduino for the ESP32:
+* Arduino IDE
+* Arduino CLI
+* PlatformIO
+
+
+
+## Backup Firmware
+
+Before messing with the firmware, it's probably a good idea to make a backup of the factory firmware. This is done using the regular ESP32 tools (esptool.py). See:
+
+[https://cyberblogspot.com/how-to-save-and-restore-esp8266-and-esp32-firmware/](https://cyberblogspot.com/how-to-save-and-restore-esp8266-and-esp32-firmware/)
+
+In summary, check how big the flash is:
+
+```bash
+esptool.py flash_id
+```
+
+esptool confirms that we have 8MB of flash memory to backup:
+
+```bash
+esptool.py v4.8.1
+Found 2 serial ports
+Serial port /dev/cu.wchusbserial145230
+Connecting....
+Detecting chip type... Unsupported detection protocol, switching and trying again...
+Connecting....
+Detecting chip type... ESP32
+Chip is ESP32-D0WD (revision v1.0)
+Features: WiFi, BT, Dual Core, 240MHz, VRef calibration in efuse, Coding Scheme None
+Crystal is 40MHz
+MAC: e8:9f:6d:46:be:94
+Uploading stub...
+Running stub...
+Stub running...
+Manufacturer: 20
+Device: 4017
+Detected flash size: 8MB
+Flash voltage set by a strapping pin to 3.3V
+Hard resetting via RTS pin...
+```
+
+We use the port and flash size from the output above, and use those values to perform the backup like this:
+
+```
+esptool.py --baud 230400 --port /dev/cu.wchusbserial145230 read_flash 0x0 0x800000 ulanzi-backup-8M.bin
+```
+
+## Option 1: Arduino IDE
 
 See for instance:
 
@@ -201,9 +259,9 @@ In summary:
 * Add the additional board manager URL for the ESP32 in the preference window:
 	* https://dl.espressif.com/dl/package_esp32_index.json
 * Download "ESP32 by espressif" in the board manager
-* Select "NODEMCU-32S" as the target board
+* Select "ESP32Dev" as the target board
 
-### Arduino CLI
+## Option 2: Arduino CLI
 
 Install Arduino CLI:
 
@@ -250,57 +308,15 @@ Monitor Serial output:
 arduino-cli monitor --fqbn esp32:esp32:esp32 --port /dev/cu.wchusbserial145230 --discovery-timeout 2m
 ```
 
-### PlatformIO
+## Option 3: PlatformIO
 
 See [https://platformio.org/](https://platformio.org/) to set up PlatformIO.
 
 PlatformIO config `src/platformio.ini` shows how to set it up for the Ulanzi TC001.
 
-## Arduino Examples
+# Arduino Examples
 
-### Backup Firmware
-
-Before messing with the firmware, it's probably a good idea to make a backup of the factory firmware. This is done using the regular ESP32 tools (esptool.py). See:
-
-[https://cyberblogspot.com/how-to-save-and-restore-esp8266-and-esp32-firmware/](https://cyberblogspot.com/how-to-save-and-restore-esp8266-and-esp32-firmware/)
-
-In summary, check how big the flash is:
-
-```bash
-esptool.py flash_id
-```
-
-esptool confirms that we have 8MB of flash memory to backup:
-
-```bash
-esptool.py v4.8.1
-Found 2 serial ports
-Serial port /dev/cu.wchusbserial145230
-Connecting....
-Detecting chip type... Unsupported detection protocol, switching and trying again...
-Connecting....
-Detecting chip type... ESP32
-Chip is ESP32-D0WD (revision v1.0)
-Features: WiFi, BT, Dual Core, 240MHz, VRef calibration in efuse, Coding Scheme None
-Crystal is 40MHz
-MAC: e8:9f:6d:46:be:94
-Uploading stub...
-Running stub...
-Stub running...
-Manufacturer: 20
-Device: 4017
-Detected flash size: 8MB
-Flash voltage set by a strapping pin to 3.3V
-Hard resetting via RTS pin...
-```
-
-We use the port and flash size from the output above, and use those values to perform the backup like this:
-
-```
-esptool.py --baud 230400 --port /dev/cu.wchusbserial145230 read_flash 0x0 0x800000 ulanzi-backup-8M.bin
-```
-
-### Buttons
+## Example Code: Buttons
 
 Note: this is a minimal example to illustrate how the hardware works. Ideally a dedicated library is used to handle button input (including debouncing, interrupts, etc.)
 
@@ -339,9 +355,9 @@ void loop() {
 }
 ```
 
-### Light Sensor
+## Example Code: Light Sensor
 
-#### Example 1: Raw Value
+### Light Sensor Example 1: Raw Value
 
 ```C++
 #define PIN_BUZZER          15
@@ -364,7 +380,7 @@ void loop() {
 }
 ```
 
-#### Example 2: Lux Value
+### Light Sensor Example 2: Lux Value
 
 The next example uses this library to obtain a value in lux: [https://github.com/QuentinCG/Arduino-Light-Dependent-Resistor-Library](https://github.com/QuentinCG/Arduino-Light-Dependent-Resistor-Library).
 Don't forget to install the library via your development environment (Arduino IDE, Arduino CLI, PlatformIO, ...).
@@ -400,9 +416,9 @@ void loop() {
 }
 ```
 
-### Battery Voltage
+## Example Code: Battery Voltage
 
-#### Example 1: Raw Value
+### Battery Voltage Example 1: Raw Value
 
 ```C++
 #define PIN_BUZZER          15
@@ -425,7 +441,7 @@ void loop() {
 }
 ```
 
-#### Example 2: Mapped Value
+### Battery Voltage Example 2: Mapped Value
 
 ```C++
 #define PIN_BUZZER          15
@@ -457,7 +473,7 @@ float getBatteryVoltage()
 }
 ```
 
-### Buzzer
+## Example Code: Buzzer
 
 This example makes use of Arduino's `tone()` function to generate sound: [https://docs.arduino.cc/language-reference/en/functions/advanced-io/tone/](https://docs.arduino.cc/language-reference/en/functions/advanced-io/tone/)
 
@@ -470,7 +486,7 @@ int freqs[4] = {247, 262, 294, 330};
 
 void setup() {
     Serial.begin(115200);
-    pinMode(PIN_BUZZER, OUTPUT);
+    pinMode(PIN_BUZZER, INPUT_PULLDOWN);
 }
 
 void loop() {
@@ -481,7 +497,7 @@ void loop() {
 }
 ```
 
-### RTC
+## Example Code: Real Time Clock (RTC)
 
 The RTC built into the ESP32 is not very accurate, and is not meant to be used to tracking real-world time. Instead, you should use the DS1307 on the PCB.
 
@@ -530,7 +546,7 @@ Ideally the time is set by querying a timeserver over WiFi, but that is outside 
 
 [https://randomnerdtutorials.com/esp32-ds1307-real-time-clock-rtc-arduino/](https://randomnerdtutorials.com/esp32-ds1307-real-time-clock-rtc-arduino/)
 
-### Temperature / Humidity Sensor
+## Example Code: Temperature / Humidity Sensor
 
 There are plenty of libraries for Arduino for the SHT3x: 
 * https://github.com/Sensirion/arduino-i2c-sht3x
@@ -572,7 +588,7 @@ void loop()
 }
 ```
 
-### LED Matrix
+## Example Code: LED Matrix
 
 FastLED is a great library to interface with the WS2812. The following is very minimal example of how to use FastLED.
 Don't forget to install the library via your development environment (Arduino IDE, Arduino CLI, PlatformIO, ...).
@@ -662,12 +678,12 @@ void loop() {
 }
 ```
 
-## Troubleshooting
+# Troubleshooting
 
 * The device makes an annoying noise (a continuous high-pitched beep)
   * You have to activate the internal pull-down for the buzzer pin (`pinMode(15, INPUT_PULLDOWN);`). See the buzzer section in the hardware description above.
 
-## References
+# References
 
 Relevant Documentation and Examples:
 
