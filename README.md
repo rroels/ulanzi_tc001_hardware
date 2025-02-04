@@ -1,4 +1,4 @@
-# Ulanzi TC001 Hardware Description and Arduino Examples
+# Ulanzi TC001 Hardware Description and Arduino-ESP32 Examples
 
 > [!NOTE]  
 > This document provides the information needed to interface with the various hardware components in the Ulanzi TC001. 
@@ -8,6 +8,16 @@
 > Any existing tutorial for using Arduino on an ESP32, also applies to the Ulanzi TC001. 
 > 
 > That said, this page does contain many working code examples to get you started :)
+
+<img src="images/hello.jpg" width="600" />
+
+## Document Goals
+
+* Describe all important hardware features of the Ulanzi TC001 (actuators, sensors, etc.).
+  * including the technical details needed to interface with them 
+  * (datasheets, physical pinout, protocols, etc.)
+* Demonstrate how to use all hardware features in custom Arduino-based firmware for the Ulanzi TC001.
+  * with working code examples using Arduino-ESP32
 
 ## Table of Content 
 
@@ -25,7 +35,7 @@
 	* [Microcontroller](#microcontroller)
 	* [PCB](#pcb)
 * [Development Environment](#development-environment)
-  	* [Backup Firmware](#backup-firmware)
+    * [Backup Firmware](#backup-firmware)
     * [Arduino IDE](#option-1-arduino-ide)
     * [Arduino CLI](#option-2-arduino-cli)
     * [PlatormIO](#option-3-platformio) 	
@@ -46,7 +56,7 @@ The Ulanzi TC001 "Smart Pixel Clock" is a nice gadget, and out-of-the-box it can
 
 <img src="images/ulanzi.jpg" width="600" /> 
 
-When I tried to write custom firmware for this device, I found that the hardware documentation was lacking. Small details are scattered across repositories and forum threads, but I could not find a complete overview. I also figured out some details not described anywhere else. This repository describes the hardware in detail, allowing you to make full use of all the hardware components on your custom firmware. Some code examples are also provided for Arduino-ESP32. 
+When I tried to write custom firmware for this device, I found that the hardware documentation was lacking. Small details are scattered across repositories and forum threads, but I could not find a complete overview. I also figured out some details not described anywhere else. This repository describes the hardware in detail, allowing you to make full use of all the hardware components in your custom firmware. Some code examples are also provided for Arduino-ESP32. 
 
 The device can be purchased from the official website, but can also be found on Amazon and other retailers:
 
@@ -117,7 +127,7 @@ The following library can be used to convert the raw GL5516 output into lux: [ht
 
 The buzzer is connected to `GPIO15`, and can be used to produce "beeps" at various pitches. To use the buzzer, send a square wave signal through `GPIO15`, and the wave's frequency will determine the "pitch" of the beep. Use something like Arduino's `tone()` function (or another buzzer library) to facilitate this. 
 
-WARNING: Do not leave this pin floating, or "random noise" on the pin will cause a high pitched whine out of the buzzer. Active the internal pull-down resistor in the ESP32 to make sure the default state of the pin is "low":
+WARNING: Do not leave this pin floating, or "random noise" on the pin will cause a high pitched whine out of the buzzer. Activate the internal pull-down resistor in the ESP32 to make sure the default state of the pin is "low":
 
 ```C
 pinMode(15, INPUT_PULLDOWN);
@@ -499,7 +509,7 @@ void loop() {
 
 ## Example Code: Real Time Clock (RTC)
 
-The RTC built into the ESP32 is not very accurate, and is not meant to be used to tracking real-world time. Instead, you should use the DS1307 on the PCB.
+The RTC built into the ESP32 is not very accurate, and is not meant to be used to track real-world time. For that, you should use the DS1307 RTC on the PCB.
 
 There are plenty of libraries for Arduino for the DS1307:
 * https://github.com/PaulStoffregen/DS1307RTC
@@ -629,11 +639,11 @@ void loop() {
 ```
 
 The above example works great, but you probably want more functionality than toggling individual LEDs. 
-FastLED_NeoMatrix is a great library that provides an Adafruit GXF library for a matrix of 
+FastLED_NeoMatrix is a great library that provides an Adafruit GXF implementation for LED matrices.
 
 [https://github.com/marcmerlin/FastLED_NeoMatrix](https://github.com/marcmerlin/FastLED_NeoMatrix)
 
-With this library you can easily achieve text rendering, scrolling, drawing shapes, effects, etc. 
+By implementing the Adafruit GXF library interface, it allows you to easily achieve text rendering, scrolling, drawing shapes, effects, etc. 
 This is a minimal example for using FastLED_NeoMatrix on the Ulanzi TC001.
 Don't forget to install the library via your development environment (Arduino IDE, Arduino CLI, PlatformIO, ...).
 
