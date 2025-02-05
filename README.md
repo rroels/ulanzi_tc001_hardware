@@ -19,7 +19,7 @@
 * Demonstrate how to use all hardware features in custom Arduino-based firmware for the Ulanzi TC001.
   * with working code examples using Arduino-ESP32
 
-## Table of Content 
+## Table of Contents
 
 * [Introduction](#introduction)
 * [Hardware Description](#hardware-description)
@@ -260,7 +260,7 @@ esptool.py --baud 230400 --port /dev/cu.wchusbserial145230 read_flash 0x0 0x8000
 
 ## Option 1: Arduino IDE
 
-See for instance:
+To set up a development environment in Arduino IDE, see for instance:
 
 [https://samueladesola.medium.com/how-to-set-up-esp32-wroom-32-b2100060470c](https://samueladesola.medium.com/how-to-set-up-esp32-wroom-32-b2100060470c)
 
@@ -273,13 +273,13 @@ In summary:
 
 ## Option 2: Arduino CLI
 
-Install Arduino CLI:
+To set up a development environment with Arduino CLI, first install Arduino CLI:
 
 ```bash
 https://arduino.github.io/arduino-cli/latest/installation
 ```
 
-Install Arduino Core for ESP32 (official package by Espressif):
+Then install Arduino Core for ESP32 (official package by Espressif):
 
 ```bash
 arduino-cli core update-index --additional-urls https://dl.espressif.com/dl/package_esp32_index.json
@@ -320,9 +320,18 @@ arduino-cli monitor --fqbn esp32:esp32:esp32 --port /dev/cu.wchusbserial145230 -
 
 ## Option 3: PlatformIO
 
-See [https://platformio.org/](https://platformio.org/) to set up PlatformIO.
+To set up a development environment with PlatformIO, see:
 
-PlatformIO config `src/platformio.ini` shows how to set it up for the Ulanzi TC001.
+[https://docs.platformio.org/en/latest/core/installation/index.html](https://docs.platformio.org/en/latest/core/installation/index.html)
+
+PlatformIO config `examples/platformio.ini` is an example PlatformIO config file for the Ulanzi TC001.
+
+You can then use the usual commands:
+
+* Clean: `pio run -t clean`
+* Build: `pio run`
+* Upload: `pio run -t upload`
+* Serial Monitor: `pio device monitor`
 
 # Arduino Examples
 
