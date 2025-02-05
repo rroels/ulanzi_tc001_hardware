@@ -75,7 +75,7 @@ The following information was verified on an Ulanzi TC001, purchased from Amazon
 | Battery Voltage Measurement| GPIO34 / ADC6 | | 
 | Light Sensor 	 | GPIO35 / ADC7 | GL5516 | 
 | Buzzer 	 		 | GPIO15        | | 
-| LED Matrix 	 	 | GPIO32 | WS2812 (256 LEDs, 8x32)| 
+| LED Matrix 	 	 | GPIO32 | WS2812B-Mini (256 LEDs, 8x32)| 
 | Temperature / Humidity Sensor | I2C (SDA=`GPIO21`, SCL=`GPIO22`) | SHT3x, address `0x44` | 
 | RTC | I2C (SDA=`GPIO21`, SCL=`GPIO22`) | DS1307, address `0x68`| 
 | Left Button | GPIO26 | Active low|
@@ -135,9 +135,9 @@ pinMode(15, INPUT_PULLDOWN);
 
 ## LED Matrix
 
-The LED Matrix is a 8x32 matrix of daisy-chained WS2812. 
+The LED Matrix is a 8x32 matrix of daisy-chained WS2812B-Mini. 
 
-[https://cdn-shop.adafruit.com/datasheets/WS2812.pdf](https://cdn-shop.adafruit.com/datasheets/WS2812.pdf)
+[https://www.tme.eu/Document/01c0100fee68667af99767edc3a7fee2/WS2812B-MINI.pdf](https://www.tme.eu/Document/01c0100fee68667af99767edc3a7fee2/WS2812B-MINI.pdf)
 
 `GPIO32` is connected to the first LED. As they are daisy-chained, the digital signal is passed down the whole chain, which is why you only need `GPIO32` to address any LED in the matrix. 
 
@@ -708,8 +708,8 @@ Relevant Documentation and Examples:
 
 Datasheets:
 
-* [https://sensirion.com/media/documents/213E6A3B/63A5A569/Datasheet\_SHT3x\_DIS.pdf](https://sensirion.com/media/documents/213E6A3B/63A5A569/Datasheet_SHT3x_DIS.pdf)
+* [https://sensirion.com/media/documents/213E6A3B/63A5A569/Datasheet_SHT3x_DIS.pdf](https://sensirion.com/media/documents/213E6A3B/63A5A569/Datasheet_SHT3x_DIS.pdf)
 * [https://www.kth.se/social/files/54ef17dbf27654753f437c56/GL5537.pdf](https://www.kth.se/social/files/54ef17dbf27654753f437c56/GL5537.pdf)
 * [https://www.analog.com/media/en/technical-documentation/data-sheets/ds1307.pdf](https://www.analog.com/media/en/technical-documentation/data-sheets/ds1307.pdf)
-* [https://www.espressif.com/sites/default/files/documentation/esp32-wroom-32d_esp32-wroom-32u\_datasheet\_en.pdf](https://www.espressif.com/sites/default/files/documentation/esp32-wroom-32d_esp32-wroom-32u_datasheet_en.pdf)
-* [https://cdn-shop.adafruit.com/datasheets/WS2812.pdf](https://cdn-shop.adafruit.com/datasheets/WS2812.pdf)
+* [https://www.espressif.com/sites/default/files/documentation/esp32-wroom-32d_esp32-wroom-32u_datasheet_en.pdf](https://www.espressif.com/sites/default/files/documentation/esp32-wroom-32d_esp32-wroom-32u_datasheet_en.pdf)
+* [https://www.tme.eu/Document/01c0100fee68667af99767edc3a7fee2/WS2812B-MINI.pdf](https://www.tme.eu/Document/01c0100fee68667af99767edc3a7fee2/WS2812B-MINI.pdf)
