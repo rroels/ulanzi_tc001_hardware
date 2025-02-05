@@ -195,13 +195,15 @@ There seem to be different revisions of the PCB. However, there is no difference
 
 Here are some pictures of the PCB:
 
+CREDIT: Reddit users popy2k17 and klein0r at [https://www.reddit.com/r/homeassistant/comments/131okf7/ulanzi_tc001/](https://www.reddit.com/r/homeassistant/comments/131okf7/ulanzi_tc001/):
+
 <img src="images/pcb_reddit_1.jpeg" width="400" >
 
 <img src="images/pcb_reddit_2.jpeg" width="400" >
 
-Credit for the images go to users popy2k17 and klein0r in this reddit thread:
+CREDIT: [https://www.hacknology.de/projekt/2024/ulanzi-tc001-repair/](https://www.hacknology.de/projekt/2024/ulanzi-tc001-repair/):
 
-[https://www.reddit.com/r/homeassistant/comments/131okf7/ulanzi_tc001/](https://www.reddit.com/r/homeassistant/comments/131okf7/ulanzi_tc001/)
+<img src="images/pcb_hacknology.jpg" width="400" >
 
 # Development Environment
 
@@ -714,6 +716,7 @@ Relevant Documentation and Examples:
 * https://www.reddit.com/r/homeassistant/comments/131okf7/ulanzi_tc001/
 * https://github.com/Blueforcer/awtrix3/blob/main/docs/hardware.md
 * https://github.com/aptonline/PixelIt_Ulanzi/blob/main/platformio.ini
+* https://www.hacknology.de/projekt/2024/ulanzi-tc001-repair/
 
 Datasheets:
 
